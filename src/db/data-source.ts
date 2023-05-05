@@ -5,10 +5,11 @@ export const dataSourceOptions: DataSourceOptions = {
     host: 'localhost',
     port: 33065,
     username: 'root',
-    password: '123',
+    password: 'password',
     database: 'test',
     entities: ['dist/**/*.entity.js'],
-    migrations: ['dist/migrations/*.js']
+    // migrations: ['dist/migrations/*.js'],
+    // synchronize: true
 };
 
 const dataSource = new DataSource(dataSourceOptions);

@@ -1,21 +1,25 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ContactInfo } from './contact-info.entity';
-import { dataSourceOptions } from './db/data-source';
-import { Employee } from './employee.entity';
-import { Meeting } from './metting.entity';
-import { Task } from './task.entity';
-import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from '@hapi/joi';
+import { DatabaseModule } from './db/database.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(dataSourceOptions),
-    UsersModule,
-    TypeOrmModule.forFeature([Employee, ContactInfo, Meeting, Task]),
-    PostsModule
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        POSTGRES_HOST: Joi.string().required(),
+        POSTGRES_PORT: Joi.number().required(),
+        POSTGRES_USER: Joi.string().required(),
+        POSTGRES_PASSWORD: Joi.string().required(),
+        POSTGRES_DB: Joi.string().required(),
+        PORT: Joi.number(),
+      })
+    }),
+    PostsModule,
+    DatabaseModule
   ],
   controllers: [AppController],
   providers: [AppService],

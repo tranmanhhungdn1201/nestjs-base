@@ -7,8 +7,6 @@ export class AppController {
 
   @Get()
   async getHello() {
-    // await this.appService.seed()
-    return this.appService.getEmployeeById(2)
     
   }
 }

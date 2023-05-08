@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import RegisterDto from './dto/createUser.dto';
-import LogInDto from './dto/logIn.dto';
+import PostgresErrorCode from '../db/postgresErrorCodes.enum';
 
 @Injectable()
 export class AuthenticationService {
@@ -27,10 +27,12 @@ export class AuthenticationService {
         }
     }
 
-    public async logIn(logInData: LogInDto) {
+    public async getAuthenticatedUser(email: string, password: string) {
       try {
-        const user = await this.usersService.getByEmail(logInData.email);
-        await this.verifyPassword(logInData.email, logInData.password);
+        
+        const user = await this.usersService.getByEmail(email);
+        console.log('getAuthenticatedUser', user);
+        await this.verifyPassword(password, user.password);
         user.password = undefined;
         return user;
       } catch (error) {

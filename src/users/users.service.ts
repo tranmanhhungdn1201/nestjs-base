@@ -2,13 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CreateUserDto from './dto/createUser.dto';
+import Address from './entities/address.entity';
 import User from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private readonly usersRepository: Repository<User>
+        private readonly usersRepository: Repository<User>,
+        @InjectRepository(Address)
+        private readonly addressRepository: Repository<Address>
     ) {}
 
     async getByEmail(email: string) {
@@ -31,5 +34,10 @@ export class UsersService {
           return user;
         }
         throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
-      }
+    }
+
+      
+    async getAddressesWithUser(id) {
+        return this.addressRepository.find({ relations: ['user'] });
+    }
 }

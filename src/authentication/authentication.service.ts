@@ -62,4 +62,9 @@ export class AuthenticationService {
     public getCookieForLogOut() {
       return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
     }
+
+    public async getAddressUser(userId: number) {
+        const addresses = await this.usersService.getAddressesWithUser(userId);
+        return addresses;
+    }
 }

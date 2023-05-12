@@ -8,9 +8,6 @@ import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import RequestWithUser from './requestWithUser.interface';
 
 @Controller('authentication')
-@SerializeOptions({
-    strategy: 'excludeAll'
-})
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService
